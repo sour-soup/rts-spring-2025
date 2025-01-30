@@ -1,22 +1,44 @@
-const int N = 5;
-const int pins[] = { 3, 5, 6, 9, 10 };
-const unsigned long pulseDuration[] = { 10000, 1000, 500, 100, 50 };
-unsigned long lastToggleTime[N];
-bool pinState[N];
+unsigned int delay0 = 10000;
+unsigned int delay1 = 1000;
+unsigned int delay2 = 500;
+unsigned int delay3 = 100;
+unsigned int delay4 = 50;
+
+unsigned int previous0 = 0;
+unsigned int previous1 = 0;
+unsigned int previous2 = 0;
+unsigned int previous3 = 0;
+unsigned int previous4 = 0;
 
 
 void setup() {
-  for (int i = 0; i < N; ++i)
-    pinMode(pins[i], OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
 }
 
-void loop() {
-  for (int i = 0; i < N; ++i) {
-    unsigned long currentTime = micros();
-    if (2 * (currentTime - lastToggleTime[i]) >= pulseDuration[i]) {
-      pinState[i] ^= 1;
-      digitalWrite(pins[i], pinState[i]);
-      lastToggleTime[i] = currentTime;
-    }
-  }
+void loop() { 
+  unsigned int currentMicros = micros();
+  if (currentMicros - previous0 >= delay0) {
+      PORTD ^= (1 << PD3);
+      previous0 = currentMicros;
+  } 
+  if (currentMicros - previous1 >= delay1) {
+      PORTD ^= (1 << PD5);
+      previous1 = currentMicros;
+  } 
+  if (currentMicros - previous2 >= delay2) {
+      PORTD ^= (1 << PD6);
+      previous2 = currentMicros;
+  } 
+  if (currentMicros - previous3 >= delay3) {
+      PORTB ^= (1 << PB1);
+      previous3 = currentMicros;
+  } 
+  if (currentMicros - previous4 >= delay4) {
+      PORTB ^= (1 << PB2);
+      previous4 = currentMicros;
+  } 
 }
